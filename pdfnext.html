@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PDFNest – Free PDF tools</title>
+<style>
+:root{--bg:#f6f4ff;--card:rgba(255,255,255,.72);--ink:#1b1730;--mute:#625d7d;--line:rgba(80,60,160,.15);--accent:#6c4cf5;--accent2:#ff5fa2;--accent-ink:#fff;--ok:#1b8a4e;--b1:#b9a7ff;--b2:#ffb3d4;--b3:#9fe3ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0b1f;--card:rgba(32,26,58,.7);--ink:#f2efff;--mute:#a9a3c8;--line:rgba(180,160,255,.18);--accent:#8f78ff;--accent2:#ff7ab4;--ok:#5fd18c;--b1:#5a3cff;--b2:#d02a7a;--b3:#1a8fc4}}
+:root[data-theme="dark"]{--bg:#0e0b1f;--card:rgba(32,26,58,.7);--ink:#f2efff;--mute:#a9a3c8;--line:rgba(180,160,255,.18);--accent:#8f78ff;--accent2:#ff7ab4;--ok:#5fd18c;--b1:#5a3cff;--b2:#d02a7a;--b3:#1a8fc4}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+.bg i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:float 22s ease-in-out infinite}
+.bg i:nth-child(1){width:46vw;height:46vw;background:var(--b1);top:-12vw;left:-8vw}
+.bg i:nth-child(2){width:38vw;height:38vw;background:var(--b2);top:20vh;right:-10vw;animation-duration:28s;animation-delay:-8s}
+.bg i:nth-child(3){width:42vw;height:42vw;background:var(--b3);bottom:-16vw;left:25vw;animation-duration:32s;animation-delay:-15s}
+.bg::after{content:"";position:absolute;inset:-60px;background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:34px 34px;animation:drift 18s linear infinite}
+.bg b{position:absolute;bottom:-40px;font-size:22px;opacity:.35;animation:rise linear infinite}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,8vh) scale(1.15)}66%{transform:translate(-5vw,4vh) scale(.92)}}
+@keyframes drift{to{transform:translate(34px,34px)}}
+@keyframes rise{to{transform:translateY(-115vh) rotate(40deg)}}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.bg i,.bg::after,.bg b{animation:none}}
+nav{display:flex;align-items:center;gap:22px;padding:16px 24px;max-width:1160px;margin:0 auto}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav .sp{flex:1}
+nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;cursor:pointer;opacity:.8}
+nav a:hover{opacity:1;color:var(--accent)}
+.wrap{max-width:1160px;margin:0 auto;padding:12px 20px 64px}
+.hero{text-align:center;padding:34px 0 22px;animation:pop .7s both}
+h1{font-size:clamp(30px,5.4vw,56px);line-height:1.08;margin:0 0 14px;letter-spacing:-.03em}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mute);max-width:620px;margin:0 auto;font-size:18px}
+.pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:26px 0 30px}
+.pill{border:1px solid var(--line);background:var(--card);backdrop-filter:blur(8px);color:var(--ink);padding:9px 18px;border-radius:99px;font:inherit;font-weight:600;cursor:pointer;transition:.15s}
+.pill:hover{border-color:var(--accent)}
+.pill.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+section.cat{margin-bottom:34px}
+section.cat h2{font-size:20px;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+section.cat h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tool{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:left;cursor:pointer;color:inherit;font:inherit;transition:transform .18s,box-shadow .18s,border-color .18s;animation:pop .5s both}
+.tool:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 30px -12px var(--accent)}
+.tile{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:24px;margin-bottom:12px;background:hsl(var(--h) 85% 60%/.2)}
+.tool b{display:block;font-size:17px;margin-bottom:2px}
+.tool span.d{color:var(--mute);font-size:14px}
+.panel{max-width:720px;margin:10px auto 0;background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:24px;animation:pop .35s both}
+.back{background:none;border:0;color:var(--mute);cursor:pointer;font:inherit;padding:0 0 10px}
+.panel h2{margin:0 0 4px}.panel p.d{margin:0 0 16px;color:var(--mute)}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:34px 16px;text-align:center;color:var(--mute);cursor:pointer;transition:.15s}
+.drop:hover,.drop.on{border-color:var(--accent);color:var(--ink);background:hsl(255 90% 70%/.08)}
+ul.files{list-style:none;margin:14px 0;padding:0}
+ul.files li{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:14px}
+ul.files li .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini{background:none;border:1px solid var(--line);border-radius:6px;color:var(--ink);cursor:pointer;padding:2px 8px}
+.opt{margin:14px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.opt label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.opt input,.opt select,.opt textarea{font:inherit;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.opt textarea{width:100%;min-height:140px}
+.go{background:linear-gradient(90deg,var(--accent),var(--accent2));color:var(--accent-ink);border:0;border-radius:12px;padding:13px 26px;font:inherit;font-weight:700;cursor:pointer;transition:.15s}
+.go:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}
+.go:disabled{opacity:.4;cursor:not-allowed}
+.msg{margin-top:12px;font-size:14px;color:var(--mute)}.msg.ok{color:var(--ok)}.msg.err{color:var(--accent2)}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:10px 20px 40px}
+</style>
+</head>
+<body>
+<div class="bg"><i></i><i></i><i></i></div>
+<nav><span class="logo" id="logo">PDFNest</span><span class="sp"></span><a data-f="org">Organize</a><a data-f="opt">Optimize</a><a data-f="edit">Edit</a><a data-f="to">Convert</a></nav>
+<div class="wrap">
+  <div id="app"></div>
+</div>
+<footer>🔒 Files never leave your device. Every tool runs locally in your browser.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const {PDFDocument, degrees, StandardFonts, rgb} = PDFLib;
+try{ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }catch(e){}
+const app = document.getElementById('app');
+let files = [], cur = null, dl = null, filter = 'all';
+try{ claude.use('downloads').then(d => { dl = d; }).catch(() => {}); }catch(e){}
+
+// floating emoji in the background
+(function(){const bg=document.querySelector('.bg');['📄','📑','✂️','🧩','📎','🔄'].forEach((e,i)=>{const b=document.createElement('b');b.textContent=e;b.style.left=(8+i*16)+'%';b.style.animationDuration=(26+i*5)+'s';b.style.animationDelay=(-i*6)+'s';bg.appendChild(b)})})();
+
+const PDF = '.pdf,application/pdf';
+const CATS = {org:['Organize PDF',255], opt:['Optimize PDF',140], to:['Convert to PDF',200], from:['Convert from PDF',30], edit:['Edit PDF',320], sec:['Privacy',350]};
+const buf = f => f.arrayBuffer();
+const val = id => document.getElementById(id).value;
+const st = t => { const m = document.getElementById('msg'); if(m) m.textContent = t; };
+
+function parseRange(s, n){
+  const out = [];
+  s.split(',').forEach(p => {
+    p = p.trim(); if(!p) return;
+    const m = p.match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+    if(!m) throw new Error('Invalid range: ' + p);
+    const a = +m[1], b = m[2] ? +m[2] : a;
+    if(a < 1 || b > n || a > b) throw new Error('Pages must be between 1 and ' + n);
+    for(let i = a; i <= b; i++) out.push(i - 1);
+  });
+  if(!out.length) throw new Error('Enter at least one page');
+  return out;
+}
+async function copyTo(out, src, idx){ (await out.copyPages(src, idx)).forEach(p => out.addPage(p)); }
+async function renderPages(file, scale, each){
+  const pdf = await pdfjsLib.getDocument({data: new Uint8Array(await buf(file))}).promise;
+  for(let i = 1; i <= pdf.numPages; i++){
+    st('Page ' + i + ' of ' + pdf.numPages + '…');
+    const pg = await pdf.getPage(i), vp = pg.getViewport({scale}), c = document.createElement('canvas');
+    c.width = vp.width; c.height = vp.height;
+    const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height);
+    await pg.render({canvasContext: ctx, viewport: vp}).promise;
+    await each(c, i, pg.getViewport({scale:1}));
+  }
+  return pdf.numPages;
+}
+const toJpg = (c, q) => new Promise(r => c.toBlob(b => r(b), 'image/jpeg', q));
+
+const P1 = '<label>Pages <input id="o1" placeholder="e.g. 1-3, 5, 8-10"></label>';
+const TOOLS = [
+ {c:'org',ic:'🧩',t:'Merge PDF',d:'Combine PDFs in the order you want',accept:PDF,multi:1,min:2,opts:'',
+  async run(){const out = await PDFDocument.create();
+   for(const f of files){const s = await PDFDocument.load(await buf(f)); await copyTo(out, s, s.getPageIndices());}
+   return {name:'merged.pdf', data: await out.save()};}},
+ {c:'org',ic:'✂️',t:'Split PDF',d:'Cut a PDF into ranges or single pages',accept:PDF,min:1,
+  opts:'<label>Mode <select id="o1"><option value="each">Every page as its own file (ZIP)</option><option value="ranges">Custom ranges (ZIP)</option></select></label><label>Ranges <input id="o2" placeholder="e.g. 1-3, 4-6"></label>',
+  async run(){const s = await PDFDocument.load(await buf(files[0])), n = s.getPageCount(), z = new JSZip();
+   const groups = val('o1') === 'each' ? s.getPageIndices().map(i => [i]) : val('o2').split(',').map(r => parseRange(r, n));
+   if(!groups.length) throw new Error('Enter at least one range');
+   for(let g = 0; g < groups.length; g++){const o = await PDFDocument.create(); await copyTo(o, s, groups[g]); z.file('part-' + (g+1) + '.pdf', await o.save());}
+   return {name:'split.zip', data: await z.generateAsync({type:'uint8array'})};}},
+ {c:'org',ic:'📤',t:'Extract pages',d:'Keep only the pages you need',accept:PDF,min:1,opts:P1,
+  async run(){const s = await PDFDocument.load(await buf(files[0])), o = await PDFDocument.create();
+   await copyTo(o, s, parseRange(val('o1'), s.getPageCount())); return {name:'extracted.pdf', data: await o.save()};}},
+ {c:'org',ic:'🗑️',t:'Remove pages',d:'Delete pages you don’t want',accept:PDF,min:1,opts:'<label>Pages to remove <input id="o1" placeholder="e.g. 2, 4-6"></label>',
+  async run(){const d = await PDFDocument.load(await buf(files[0])), idx = [...new Set(parseRange(val('o1'), d.getPageCount()))];
+   if(idx.length >= d.getPageCount()) throw new Error('You can’t remove every page');
+   idx.sort((a,b) => b-a).forEach(i => d.removePage(i)); return {name:'trimmed.pdf', data: await d.save()};}},
+ {c:'org',ic:'🔀',t:'Organize PDF',d:'Reorder or reverse pages',accept:PDF,min:1,
+  opts:'<label>New order <input id="o1" placeholder="e.g. 3,1,2 (blank = reverse)"></label>',
+  async run(){const s = await PDFDocument.load(await buf(files[0])), n = s.getPageCount(), o = await PDFDocument.create();
+   const idx = val('o1').trim() ? parseRange(val('o1'), n) : s.getPageIndices().reverse();
+   await copyTo(o, s, idx); return {name:'organized.pdf', data: await o.save()};}},
+ {c:'org',ic:'🔄',t:'Rotate PDF',d:'Turn all pages 90°, 180° or 270°',accept:PDF,min:1,
+  opts:'<label>Rotate <select id="o1"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">90° counter-clockwise</option></select></label>',
+  async run(){const d = await PDFDocument.load(await buf(files[0])), a = +val('o1');
+   d.getPages().forEach(p => p.setRotation(degrees((p.getRotation().angle + a) % 360))); return {name:'rotated.pdf', data: await d.save()};}},
+ {c:'opt',ic:'🗜️',t:'Compress PDF',d:'Shrink file size (pages become images)',accept:PDF,min:1,
+  opts:'<label>Level <select id="o1"><option value="1,.5">Strong</option><option value="1.3,.65" selected>Balanced</option><option value="1.8,.8">Light</option></select></label>',
+  async run(){const [sc, q] = val('o1').split(',').map(Number), o = await PDFDocument.create();
+   await renderPages(files[0], sc, async (c, i, vp) => {const im = await o.embedJpg(await (await toJpg(c, q)).arrayBuffer());
+    o.addPage([vp.width, vp.height]).drawImage(im, {x:0, y:0, width:vp.width, height:vp.height});});
+   const bytes = await o.save();
+   if(bytes.length >= files[0].size) st('Note: the result isn’t smaller than the original; try a stronger level.');
+   return {name:'compressed.pdf', data: bytes};}},
+ {c:'to',ic:'🖼️',t:'JPG to PDF',d:'Turn JPG or PNG images into a PDF',accept:'.jpg,.jpeg,.png,image/jpeg,image/png',multi:1,min:1,opts:'',
+  async run(){const o = await PDFDocument.create();
+   for(const f of files){const b = await buf(f), im = /png/i.test(f.type) || /\.png$/i.test(f.name) ? await o.embedPng(b) : await o.embedJpg(b);
+    o.addPage([im.width, im.height]).drawImage(im, {x:0, y:0, width:im.width, height:im.height});}
+   return {name:'images.pdf', data: await o.save()};}},
+ {c:'to',ic:'📝',t:'Text to PDF',d:'Type or paste text, get a clean PDF',nofile:1,min:0,
+  opts:'<textarea id="o1" placeholder="Type or paste your text here…"></textarea>',
+  async run(){const txt = val('o1').replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]/g, '?'); if(!txt.trim()) throw new Error('Enter some text first');
+   const o = await PDFDocument.create(), f = await o.embedFont(StandardFonts.Helvetica), W = 595, H = 842, M = 54, S = 11, L = 16;
+   let pg = o.addPage([W, H]), y = H - M;
+   const lines = []; txt.split(/\r?\n/).forEach(par => {let ln = '';
+    par.split(' ').forEach(w => {const t = ln ? ln + ' ' + w : w; if(f.widthOfTextAtSize(t, S) > W - 2*M && ln){lines.push(ln); ln = w;} else ln = t;}); lines.push(ln);});
+   lines.forEach(l => {if(y < M){pg = o.addPage([W, H]); y = H - M;} pg.drawText(l, {x:M, y, size:S, font:f}); y -= L;});
+   return {name:'text.pdf', data: await o.save()};}},
+ {c:'from',ic:'📸',t:'PDF to JPG',d:'Export every page as an image',accept:PDF,min:1,
+  opts:'<label>Quality <select id="o1"><option value="1.5,.8">Standard</option><option value="2.5,.92">High</option></select></label>',
+  async run(){const [sc, q] = val('o1').split(',').map(Number), z = new JSZip();
+   const n = await renderPages(files[0], sc, async (c, i) => z.file('page-' + i + '.jpg', await (await toJpg(c, q)).arrayBuffer()));
+   return {name:'pages.zip', data: await z.generateAsync({type:'uint8array'})};}},
+ {c:'from',ic:'🔤',t:'PDF to Text',d:'Extract the text from a PDF',accept:PDF,min:1,opts:'',
+  async run(){const pdf = await pdfjsLib.getDocument({data: new Uint8Array(await buf(files[0]))}).promise; let out = '';
+   for(let i = 1; i <= pdf.numPages; i++){st('Page ' + i + ' of ' + pdf.numPages + '…'); const tc = await (await pdf.getPage(i)).getTextContent();
+    out += tc.items.map(x => x.str + (x.hasEOL ? '\n' : '')).join(' ') + '\n\n';}
+   if(!out.trim()) throw new Error('No selectable text found (it may be a scanned PDF).');
+   return {name:'extracted.txt', data: out};}},
+ {c:'edit',ic:'🔢',t:'Page numbers',d:'Add numbering to every page',accept:PDF,min:1,
+  opts:'<label>Position <select id="o1"><option value="c">Bottom center</option><option value="r">Bottom right</option><option value="l">Bottom left</option></select></label>',
+  async run(){const d = await PDFDocument.load(await buf(files[0])), f = await d.embedFont(StandardFonts.Helvetica), pos = val('o1'), ps = d.getPages();
+   ps.forEach((p, i) => {const w = p.getSize().width, t = (i+1) + ' / ' + ps.length, tw = f.widthOfTextAtSize(t, 10);
+    p.drawText(t, {x: pos === 'c' ? (w - tw)/2 : pos === 'r' ? w - tw - 36 : 36, y: 20, size: 10, font: f, color: rgb(.3,.3,.3)});});
+   return {name:'numbered.pdf', data: await d.save()};}},
+ {c:'edit',ic:'💧',t:'Watermark',d:'Stamp diagonal text on every page',accept:PDF,min:1,
+  opts:'<label>Text <input id="o1" value="CONFIDENTIAL"></label><label>Opacity <select id="o2"><option value=".15">Light</option><option value=".3" selected>Medium</option><option value=".5">Strong</option></select></label>',
+  async run(){const d = await PDFDocument.load(await buf(files[0])), f = await d.embedFont(StandardFonts.HelveticaBold), t = val('o1').replace(/[^\x20-\x7E]/g,'') || 'DRAFT';
+   d.getPages().forEach(p => {const {width:w, height:h} = p.getSize(), s = Math.min(w, h) / (t.length * .42 + 2), tw = f.widthOfTextAtSize(t, s);
+    p.drawText(t, {x: w/2 - tw*.354, y: h/2 - tw*.354, size: s, font: f, color: rgb(.5,.5,.5), opacity: +val('o2'), rotate: degrees(45)});});
+   return {name:'watermarked.pdf', data: await d.save()};}},
+ {c:'edit',ic:'📐',t:'Crop margins',d:'Trim a set amount off every page',accept:PDF,min:1,
+  opts:'<label>Trim each side by <input id="o1" type="number" min="0" max="200" value="20" style="width:80px"> pt</label>',
+  async run(){const d = await PDFDocument.load(await buf(files[0])), m = Math.max(0, +val('o1') || 0);
+   d.getPages().forEach(p => {const {width:w, height:h} = p.getSize(); if(w <= 2*m + 20 || h <= 2*m + 20) throw new Error('Trim is larger than the page');
+    p.setCropBox(m, m, w - 2*m, h - 2*m);}); return {name:'cropped.pdf', data: await d.save()};}},
+ {c:'sec',ic:'🧼',t:'Strip metadata',d:'Remove author, title and other hidden info',accept:PDF,min:1,opts:'',
+  async run(){const d = await PDFDocument.load(await buf(files[0]), {updateMetadata:false});
+   d.setTitle(''); d.setAuthor(''); d.setSubject(''); d.setKeywords([]); d.setProducer(''); d.setCreator('');
+   return {name:'clean.pdf', data: await d.save()};}}
+];
+
+function home(){
+  cur = null; files = [];
+  const keys = Object.keys(CATS);
+  let h = `<div class="hero"><h1>Every PDF tool you need, <em>in one nest</em></h1><p class="sub">Merge, split, compress, convert and polish PDFs. Free, instant and fully private, because it all happens on your device.</p></div>
+  <div class="pills"><button class="pill ${filter==='all'?'on':''}" data-f="all">All</button>${keys.map(k => `<button class="pill ${filter===k?'on':''}" data-f="${k}">${CATS[k][0]}</button>`).join('')}</div>`;
+  keys.filter(k => filter === 'all' || filter === k).forEach(k => {
+    h += `<section class="cat" id="s-${k}"><h2>${CATS[k][0]}</h2><div class="grid">` + TOOLS.map((t, i) => t.c === k ?
+      `<button class="tool" style="animation-delay:${i*40}ms" data-i="${i}"><div class="tile" style="--h:${CATS[k][1]}">${t.ic}</div><b>${t.t}</b><span class="d">${t.d}</span></button>` : '').join('') + '</div></section>';
+  });
+  app.innerHTML = h;
+  app.querySelectorAll('.pill').forEach(b => b.onclick = () => { filter = b.dataset.f; home(); });
+  app.querySelectorAll('.tool').forEach(b => b.onclick = () => open(+b.dataset.i));
+}
+document.getElementById('logo').onclick = () => { filter = 'all'; home(); scrollTo(0,0); };
+document.querySelectorAll('nav a').forEach(a => a.onclick = () => { filter = a.dataset.f; home(); });
+
+function open(i){
+  cur = TOOLS[i]; files = []; scrollTo(0,0);
+  app.innerHTML = `<div class="panel"><button class="back" id="back">← All tools</button><h2>${cur.t}</h2><p class="d">${cur.d}</p>
+   ${cur.nofile ? '' : `<div class="drop" id="drop">Drop ${cur.multi ? 'files' : 'a file'} here or click to choose</div><input type="file" id="inp" hidden accept="${cur.accept}" ${cur.multi ? 'multiple' : ''}><ul class="files" id="list"></ul>`}
+   <div class="opt">${cur.opts}</div><button class="go" id="go" ${cur.min > 0 ? 'disabled' : ''}>${cur.t}</button><div class="msg" id="msg"></div></div>`;
+  document.getElementById('back').onclick = home;
+  document.getElementById('go').onclick = run;
+  if(!cur.nofile){
+    const drop = document.getElementById('drop'), inp = document.getElementById('inp');
+    drop.onclick = () => inp.click(); inp.onchange = () => add(inp.files);
+    drop.ondragover = e => { e.preventDefault(); drop.classList.add('on'); };
+    drop.ondragleave = () => drop.classList.remove('on');
+    drop.ondrop = e => { e.preventDefault(); drop.classList.remove('on'); add(e.dataTransfer.files); };
+  }
+}
+function add(fl){ const a = [...fl]; files = cur.multi ? files.concat(a) : a.slice(0, 1); draw(); }
+function draw(){
+  const ul = document.getElementById('list');
+  ul.innerHTML = files.map((f, i) => `<li><span class="n">${f.name.replace(/</g,'&lt;')}</span>` + (cur.multi ? `<button class="mini" data-u="${i}">↑</button><button class="mini" data-d="${i}">↓</button>` : '') + `<button class="mini" data-x="${i}">✕</button></li>`).join('');
+  ul.querySelectorAll('[data-x]').forEach(b => b.onclick = () => { files.splice(+b.dataset.x, 1); draw(); });
+  ul.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { const i = +b.dataset.u; if(i > 0){ [files[i-1], files[i]] = [files[i], files[i-1]]; draw(); } });
+  ul.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { const i = +b.dataset.d; if(i < files.length-1){ [files[i+1], files[i]] = [files[i], files[i+1]]; draw(); } });
+  document.getElementById('go').disabled = files.length < cur.min;
+}
+async function run(){
+  const msg = document.getElementById('msg'), go = document.getElementById('go');
+  msg.className = 'msg'; msg.textContent = 'Working…'; go.disabled = true;
+  try{
+    const r = await cur.run();
+    if(dl) await dl.save({filename: r.name, data: r.data});
+    else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([r.data])); a.download = r.name; document.body.appendChild(a); a.click(); a.remove(); }
+    msg.className = 'msg ok'; msg.textContent = 'Done: ' + r.name;
+  }catch(e){
+    msg.className = 'msg err';
+    msg.textContent = e && e.code === 'declined' ? 'Save cancelled.' : (e && e.message) || 'Something went wrong. Is the file a valid, unencrypted PDF?';
+  }finally{ go.disabled = files.length < cur.min; }
+}
+home();
+</script>
+</body>
+</html>
